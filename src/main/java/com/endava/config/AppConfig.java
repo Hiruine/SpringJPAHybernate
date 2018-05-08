@@ -1,9 +1,14 @@
-package com.endava.spring;
+package com.endava.config;
 
+import com.endava.persistence.dao.StudentDao;
+import com.endava.persistence.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+//import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -18,7 +23,14 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-public class PersistenceJPAConfig{
+@ComponentScan("com.endava")
+//@EnableJpaRepositories(basePackages =  "com.endava.persistence.dao")
+public class AppConfig {
+
+
+    @Autowired
+    private Environment env;
+
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -40,7 +52,7 @@ public class PersistenceJPAConfig{
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/hotelDB");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/exampleJPA");
         dataSource.setUsername( "postgres" );
         dataSource.setPassword( "postgres" );
         return dataSource;
